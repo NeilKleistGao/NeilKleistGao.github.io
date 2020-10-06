@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>C++ Everything Can Work 0x0000： Order of Initialization</title>
+      <link href="2020/10/06/cpp-everything-can-work-0/"/>
+      <url>2020/10/06/cpp-everything-can-work-0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h1><p>All codes in this article run in the environment below:</p><ul><li>Ubuntu 20.04 LTS</li><li>CMake 3.17</li><li>GCC 9.3(C++ 17)</li></ul><p>Please pay attention to influences brought by the differences between different compiler versions.</p><a id="more"></a><h1 id="A-Simple-Example"><a href="#A-Simple-Example" class="headerlink" title="A Simple Example"></a>A Simple Example</h1><p>Here is a simple example of class:</p><pre><code class="c++">class Foo &#123;public:    Foo(const int&amp; a) :_a(a), _b(_a + 1) &#123;&#125;    int getB() &#123;        return _b;    &#125;private:    int _a, _b;&#125;;</code></pre><p>We defined a class called “Foo” that has two integer member variables <code>_a</code> and <code>_b</code>. Now we can create an instance of Foo:</p><pre><code class="c++">int main() &#123;    Foo foo(2);    std::cout &lt;&lt; foo.getB() &lt;&lt; std::endl;    return 0;&#125;</code></pre><p>This program will output a single number 3.</p><h1 id="What’s-Wrong"><a href="#What’s-Wrong" class="headerlink" title="What’s Wrong?"></a>What’s Wrong?</h1><p>Let’s do some tricks:</p><pre><code class="c++">private:    int _b, _a;</code></pre><p>We exchanged the order of two member variables. Compiling and running our new program, and we may get:<br><img src="https://i.loli.net/2020/10/06/YNHjzPyUm5oIGh7.png" alt="Screenshot from 2020-10-06 17-15-29.png"></p><p>What’s wrong with our class? Is <code>_a</code> correct? </p><h1 id="The-Order-of-Initialization"><a href="#The-Order-of-Initialization" class="headerlink" title="The Order of Initialization"></a>The Order of Initialization</h1><p>If we debug this program, we will find that <code>_a</code> is actually 2, not 32767 or something else.</p><p>It is worth noting that we initialized <code>_b</code> using <code>_a</code> rather than <code>a</code>. <strong>If <code>_b</code> is declared before <code>_a</code>, the variable <code>_b</code> will be initialized first!</strong><br>Because <code>_a</code> is not initialized yet, we can’t make sure what the value of <code>_a</code> is and so is <code>_b</code>. </p><p>Do remember, if a member variable’s value depends on others’ content, <strong>declare it later</strong>.<br>If you insist on using this confusing order, you should be careful to define constructor function:</p><pre><code class="c++">Foo(const int&amp; a) :_a(a), _b(a + 1) /* use parameters to initialize instead of member variables! */ &#123;&#125;</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ Everything Can Work </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>C++ Class Getting Started(part1)</title>
       <link href="2020/10/03/cpp-class/"/>
       <url>2020/10/03/cpp-class/</url>
