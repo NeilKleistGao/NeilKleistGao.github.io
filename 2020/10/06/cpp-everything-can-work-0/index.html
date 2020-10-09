@@ -5,11 +5,9 @@
 <li>CMake 3.17</li>
 <li>GCC 9.3(C++ 17)</li>
 </ul>
-<p>Please pay attention to influences brought by the differences between different compiler versions.</p>
-<a id="more"></a>
-
+<p>Please pay attention to influences brought by the differences between different compiler versions.<br><a id="more"></a></p>
 <h1 id="A-Simple-Example"><a href="#A-Simple-Example" class="headerlink" title="A Simple Example"></a>A Simple Example</h1><p>Here is a simple example of class:</p>
-<pre><code class="c++">class Foo &#123;
+<pre><code class="lang-c++">class Foo &#123;
 public:
     Foo(const int&amp; a) :_a(a), _b(_a + 1) &#123;&#125;
 
@@ -18,25 +16,40 @@ public:
     &#125;
 private:
     int _a, _b;
-&#125;;</code></pre>
+&#125;;
+</code></pre>
 <p>We defined a class called “Foo” that has two integer member variables <code>_a</code> and <code>_b</code>. Now we can create an instance of Foo:</p>
-<pre><code class="c++">int main() &#123;
+<pre><code class="lang-c++">int main() &#123;
     Foo foo(2);
     std::cout &lt;&lt; foo.getB() &lt;&lt; std::endl;
     return 0;
-&#125;</code></pre>
+&#125;
+</code></pre>
 <p>This program will output a single number 3.</p>
 <h1 id="What’s-Wrong"><a href="#What’s-Wrong" class="headerlink" title="What’s Wrong?"></a>What’s Wrong?</h1><p>Let’s do some tricks:</p>
-<pre><code class="c++">private:
-    int _b, _a;</code></pre>
+<pre><code class="lang-c++">private:
+    int _b, _a;
+</code></pre>
 <p>We exchanged the order of two member variables. Compiling and running our new program, and we may get:<br><img src="https://i.loli.net/2020/10/06/YNHjzPyUm5oIGh7.png" alt="Screenshot from 2020-10-06 17-15-29.png"></p>
 <p>What’s wrong with our class? Is <code>_a</code> correct? </p>
 <h1 id="The-Order-of-Initialization"><a href="#The-Order-of-Initialization" class="headerlink" title="The Order of Initialization"></a>The Order of Initialization</h1><p>If we debug this program, we will find that <code>_a</code> is actually 2, not 32767 or something else.</p>
 <p>It is worth noting that we initialized <code>_b</code> using <code>_a</code> rather than <code>a</code>. <strong>If <code>_b</code> is declared before <code>_a</code>, the variable <code>_b</code> will be initialized first!</strong><br>Because <code>_a</code> is not initialized yet, we can’t make sure what the value of <code>_a</code> is and so is <code>_b</code>. </p>
 <p>Do remember, if a member variable’s value depends on others’ content, <strong>declare it later</strong>.<br>If you insist on using this confusing order, you should be careful to define constructor function:</p>
-<pre><code class="c++">Foo(const int&amp; a) :_a(a), _b(a + 1) /* use parameters to initialize instead of member variables! */ &#123;
-&#125;</code></pre>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">Author：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">NeilKleistGao</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">Link：</span><span class="p-copytight-value"><a href="/2020/10/06/cpp-everything-can-work-0/">http://example.com/2020/10/06/cpp-everything-can-work-0/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">Copyright：</span><span class="p-copytight-value">All articles in this blog use<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>license。Please indicate the source when reprinting  <a href="http://example.com">NeilKleistGao's blog</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/C/">C++</a></span></div><aside id="toc"><div class="toc-title">CATALOG</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface"><span class="toc-number">1.</span> <span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Simple-Example"><span class="toc-number">2.</span> <span class="toc-text">A Simple Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What%E2%80%99s-Wrong"><span class="toc-number">3.</span> <span class="toc-text">What’s Wrong?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Order-of-Initialization"><span class="toc-number">4.</span> <span class="toc-text">The Order of Initialization</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/10/03/cpp-class/">C++ Class Getting Started(part1) &gt;</a></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">NeilKleistGao's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script>var search_path = 'search.xml';
+<pre><code class="lang-c++">Foo(const int&amp; a) :_a(a), _b(a + 1) /* use parameters to initialize instead of member variables! */ &#123;
+&#125;
+</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">Author：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">NeilKleistGao</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">Link：</span><span class="p-copytight-value"><a href="/2020/10/06/cpp-everything-can-work-0/">http://example.com/2020/10/06/cpp-everything-can-work-0/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">Copyright：</span><span class="p-copytight-value">All articles in this blog use<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>license。Please indicate the source when reprinting  <a href="http://example.com">NeilKleistGao's blog</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/C/">C++</a></span></div><aside id="toc"><div class="toc-title">CATALOG</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface"><span class="toc-number">1.</span> <span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Simple-Example"><span class="toc-number">2.</span> <span class="toc-text">A Simple Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What%E2%80%99s-Wrong"><span class="toc-number">3.</span> <span class="toc-text">What’s Wrong?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Order-of-Initialization"><span class="toc-number">4.</span> <span class="toc-text">The Order of Initialization</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/08/conjugate-gradient/">&lt; Conjugate Gradient</a><a class="next" href="/2020/10/03/cpp-class/">C++ Class Getting Started(part1) &gt;</a></div></section><script>MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        processEscapes: true
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax();
+    for (var i = 0; i < all.length; ++i)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+});</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">NeilKleistGao's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script>var search_path = 'search.xml';
 if (search_path.length == 0) {
     search_path = 'search.xml';
 }

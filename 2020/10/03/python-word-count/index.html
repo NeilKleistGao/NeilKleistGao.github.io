@@ -2,17 +2,16 @@
 </head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">NeilKleistGao's Blog</a></h1></div><p class="m-desc">I thought what I'd do was I'd pretend I was one of those deaf-mutes.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">Archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="search" onfocus="if(this.value=='search'){this.value='';}" onblur="if(this.value==''){this.value='search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">How to Count the Number of Words in Python</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/10/03/python-word-count/">2020-10-03</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/Entrusted-Tutorial/">Entrusted Tutorial</a></span></div></div><div class="p-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是一篇受朋友之邀而创作的文章，为了方便阅读，本文使用中文编写。</p>
 <p>本文所使用的解释器版本为：Python 3.8，无需其他依赖库，请注意版本之间的差异带来的影响。</p>
 <a id="more"></a>
-
 <h1 id="单词计数"><a href="#单词计数" class="headerlink" title="单词计数"></a>单词计数</h1><h2 id="使用字典进行计数"><a href="#使用字典进行计数" class="headerlink" title="使用字典进行计数"></a>使用字典进行计数</h2><p>首先我们需要把一句话划分为数个单词组成的数组：</p>
-<pre><code class="python">article = &quot;I thought what I&#39;d do was I&#39;d pretend I was one of those deaf-mutes.&quot;
+<pre><code class="lang-python">article = &quot;I thought what I&#39;d do was I&#39;d pretend I was one of those deaf-mutes.&quot;
 
 words = article.split(&#39; &#39;)
 print(words)
 </code></pre>
 <p>你的输出应该是类似这样的：</p>
-<pre><code>[&#39;I&#39;, &#39;thought&#39;, &#39;what&#39;, &quot;I&#39;d&quot;, &#39;do&#39;, &#39;was&#39;, &quot;I&#39;d&quot;, &#39;pretend&#39;, &#39;I&#39;, &#39;was&#39;, &#39;one&#39;, &#39;of&#39;, &#39;those&#39;, &#39;deaf-mutes.&#39;]</code></pre>
-<p>然而这并不够完美：<code>deaf-mutes</code>和<code>deaf-mutes.</code>（多了一个英文句号）会被认为是两个单词。我们需要使用正则表达式进行更完美的分割：</p>
-<pre><code class="python">import re
+<pre><code>[&#39;I&#39;, &#39;thought&#39;, &#39;what&#39;, &quot;I&#39;d&quot;, &#39;do&#39;, &#39;was&#39;, &quot;I&#39;d&quot;, &#39;pretend&#39;, &#39;I&#39;, &#39;was&#39;, &#39;one&#39;, &#39;of&#39;, &#39;those&#39;, &#39;deaf-mutes.&#39;]
+</code></pre><p>然而这并不够完美：<code>deaf-mutes</code>和<code>deaf-mutes.</code>（多了一个英文句号）会被认为是两个单词。我们需要使用正则表达式进行更完美的分割：</p>
+<pre><code class="lang-python">import re
 
 article = &quot;I thought what I&#39;d do was I&#39;d pretend I was one of those deaf-mutes.&quot;
 
@@ -21,7 +20,7 @@ print(words)
 </code></pre>
 <p>虽然这样会导致多出一个空的字符串，但处理空串这比让我们区分<code>deaf-mutes</code>和<code>deaf-mutes.</code>要容易多了。</p>
 <p>接下来建立一个字典，并对单词数量进行统计：</p>
-<pre><code class="python">numbers = &#123;&#125;
+<pre><code class="lang-python">numbers = &#123;&#125;
 for word in words:
     if word == &quot;&quot;:
         continue
@@ -34,25 +33,37 @@ print(numbers)
 </code></pre>
 <p>我们首先建立一个空的字典，并遍历我们刚刚生成的单词列表。如果当前的单词为空，那么忽略它直接处理下一个；否则我们查看该单词在字典中是否已经出现过——如果出现过我们将数字加1,否则这是一个新的单词，将其添加到字典中。</p>
 <p>最后的输出应该类似于这样：</p>
-<pre><code>&#123;&#39;I&#39;: 2, &#39;thought&#39;: 1, &#39;what&#39;: 1, &quot;I&#39;d&quot;: 2, &#39;do&#39;: 1, &#39;was&#39;: 2, &#39;pretend&#39;: 1, &#39;one&#39;: 1, &#39;of&#39;: 1, &#39;those&#39;: 1, &#39;deaf-mutes&#39;: 1&#125;</code></pre>
-<h2 id="按照词频进行排序"><a href="#按照词频进行排序" class="headerlink" title="按照词频进行排序"></a>按照词频进行排序</h2><p>我们可能需要知道出现频率最高的几个单词，这要求我们按照出现频率进行排序。为了实现排序，我们需要将字典转为列表：</p>
-<pre><code class="python">pairs = list(numbers.items())
+<pre><code>&#123;&#39;I&#39;: 2, &#39;thought&#39;: 1, &#39;what&#39;: 1, &quot;I&#39;d&quot;: 2, &#39;do&#39;: 1, &#39;was&#39;: 2, &#39;pretend&#39;: 1, &#39;one&#39;: 1, &#39;of&#39;: 1, &#39;those&#39;: 1, &#39;deaf-mutes&#39;: 1&#125;
+</code></pre><h2 id="按照词频进行排序"><a href="#按照词频进行排序" class="headerlink" title="按照词频进行排序"></a>按照词频进行排序</h2><p>我们可能需要知道出现频率最高的几个单词，这要求我们按照出现频率进行排序。为了实现排序，我们需要将字典转为列表：</p>
+<pre><code class="lang-python">pairs = list(numbers.items())
 print(pairs)
 </code></pre>
 <p>我们可以得到：</p>
-<pre><code>[(&#39;I&#39;, 2), (&#39;thought&#39;, 1), (&#39;what&#39;, 1), (&quot;I&#39;d&quot;, 2), (&#39;do&#39;, 1), (&#39;was&#39;, 2), (&#39;pretend&#39;, 1), (&#39;one&#39;, 1), (&#39;of&#39;, 1), (&#39;those&#39;, 1), (&#39;deaf-mutes&#39;, 1)]</code></pre>
-<p>这样的结果：一个包含二元元组的列表。我们只需要按照元组的第二维（实际上是第一维，下标通常都是从0开始的）进行排序即可：</p>
-<pre><code class="python">pairs = sorted(pairs, key=lambda x: x[1], reverse=True)
-print(pairs)</code></pre>
+<pre><code>[(&#39;I&#39;, 2), (&#39;thought&#39;, 1), (&#39;what&#39;, 1), (&quot;I&#39;d&quot;, 2), (&#39;do&#39;, 1), (&#39;was&#39;, 2), (&#39;pretend&#39;, 1), (&#39;one&#39;, 1), (&#39;of&#39;, 1), (&#39;those&#39;, 1), (&#39;deaf-mutes&#39;, 1)]
+</code></pre><p>这样的结果：一个包含二元元组的列表。我们只需要按照元组的第二维（实际上是第一维，下标通常都是从0开始的）进行排序即可：</p>
+<pre><code class="lang-python">pairs = sorted(pairs, key=lambda x: x[1], reverse=True)
+print(pairs)
+</code></pre>
 <p>这里我们使用了一个<code>lambda</code>表达式来指定排序所使用的键，你也可以使用一个普通的函数来完成。</p>
 <p>输出结果应该类似于这样：</p>
-<pre><code>[(&#39;I&#39;, 2), (&quot;I&#39;d&quot;, 2), (&#39;was&#39;, 2), (&#39;thought&#39;, 1), (&#39;what&#39;, 1), (&#39;do&#39;, 1), (&#39;pretend&#39;, 1), (&#39;one&#39;, 1), (&#39;of&#39;, 1), (&#39;those&#39;, 1), (&#39;deaf-mutes&#39;, 1)]</code></pre>
-<p>接下来我们就可以得到出现次数前k的单词是什么了：</p>
-<pre><code class="python">k = 3
+<pre><code>[(&#39;I&#39;, 2), (&quot;I&#39;d&quot;, 2), (&#39;was&#39;, 2), (&#39;thought&#39;, 1), (&#39;what&#39;, 1), (&#39;do&#39;, 1), (&#39;pretend&#39;, 1), (&#39;one&#39;, 1), (&#39;of&#39;, 1), (&#39;those&#39;, 1), (&#39;deaf-mutes&#39;, 1)]
+</code></pre><p>接下来我们就可以得到出现次数前k的单词是什么了：</p>
+<pre><code class="lang-python">k = 3
 for i in range(k):
     print(pairs[i][0])
 </code></pre>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">Author：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">NeilKleistGao</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">Link：</span><span class="p-copytight-value"><a href="/2020/10/03/python-word-count/">http://example.com/2020/10/03/python-word-count/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">Copyright：</span><span class="p-copytight-value">All articles in this blog use<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>license。Please indicate the source when reprinting  <a href="http://example.com">NeilKleistGao's blog</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">CATALOG</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E8%AF%8D%E8%AE%A1%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">单词计数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E8%AE%A1%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">使用字典进行计数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E8%AF%8D%E9%A2%91%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="toc-number">2.2.</span> <span class="toc-text">按照词频进行排序</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/03/cpp-class/">&lt; C++ Class Getting Started(part1)</a></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">NeilKleistGao's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script>var search_path = 'search.xml';
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">Author：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">NeilKleistGao</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">Link：</span><span class="p-copytight-value"><a href="/2020/10/03/python-word-count/">http://example.com/2020/10/03/python-word-count/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">Copyright：</span><span class="p-copytight-value">All articles in this blog use<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>license。Please indicate the source when reprinting  <a href="http://example.com">NeilKleistGao's blog</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Python/">Python</a></span></div><aside id="toc"><div class="toc-title">CATALOG</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E8%AF%8D%E8%AE%A1%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">单词计数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E8%AE%A1%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">使用字典进行计数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E8%AF%8D%E9%A2%91%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="toc-number">2.2.</span> <span class="toc-text">按照词频进行排序</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/03/cpp-class/">&lt; C++ Class Getting Started(part1)</a></div></section><script>MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        processEscapes: true
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax();
+    for (var i = 0; i < all.length; ++i)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+});</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">NeilKleistGao's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script>var search_path = 'search.xml';
 if (search_path.length == 0) {
     search_path = 'search.xml';
 }
