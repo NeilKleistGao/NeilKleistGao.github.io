@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="I thought what I'd do was I'd pretend I was one of those deaf-mutes"><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>C++ Everything Can Work 0x0001： Always Explicit | NeilKleistGao's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="NeilKleistGao's Blog" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">NeilKleistGao's Blog</a></h1></div><p class="m-desc">I thought what I'd do was I'd pretend I was one of those deaf-mutes.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">Archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="search" onfocus="if(this.value=='search'){this.value='';}" onblur="if(this.value==''){this.value='search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">C++ Everything Can Work 0x0001： Always Explicit</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/10/10/cpp-everything-can-work-1/">2020-10-10</a></span><span class="p-category"><i class="fa fa-folder"></i><a href="/categories/C-Everything-Can-Work/">C++ Everything Can Work</a></span></div></div><div class="p-content"><h1 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h1><p>All codes in this article run in the environment below:</p>
+<ul>
+<li>Ubuntu 20.04 LTS</li>
+<li>CMake 3.17</li>
+<li>GCC 9.3(C++ 17)</li>
+</ul>
+<p>Please pay attention to influences brought by the differences between different compiler versions.<br><a id="more"></a></p>
+<h1 id="Implicit-Conversion"><a href="#Implicit-Conversion" class="headerlink" title="Implicit Conversion"></a>Implicit Conversion</h1><p>Type Conversion is a tiring work sometimes, so the compiler will help us to finish it. If you don’t declare the conversion explicitly but compiler does, we call this situation <strong>Implicit Conversion</strong>.</p>
+<p>For example: </p>
+<pre><code class="lang-c++">float a = 1.3f;
+int b = a;
+std::cout &lt;&lt; b &lt;&lt; std::endl;
+</code></pre>
+<p>In this case, compiler help us to convert a float number to an integer. Here is another example, but much more complex:</p>
+<pre><code class="lang-c++">class Foo &#123;
+public:
+    Foo(int a) : _a(a) &#123;&#125;
+
+    int getA() &#123;
+        return _a;
+    &#125;
+private:
+    int _a;
+&#125;;
+
+int main() &#123;
+    Foo foo = 1;
+    std::cout &lt;&lt; foo.getA() &lt;&lt; std::endl;
+    return 0;
+&#125;
+</code></pre>
+<p>The implicit conversion is used to construct a Foo object. In the rest of this article, we will see why this class is unsafe.</p>
+<h1 id="Two-Functions"><a href="#Two-Functions" class="headerlink" title="Two Functions"></a>Two Functions</h1><p>We decided to write a function called “myPrint” to simplify the process of output. Of course this function should have at least two forms:</p>
+<ul>
+<li><code>void myPrint(Foo f)</code></li>
+<li><code>void myPrint(int i)</code></li>
+</ul>
+<p>So here are our new codes:</p>
+<pre><code class="lang-c++">class Foo &#123;
+public:
+    Foo(int a) : _a(a) &#123;&#125;
+
+    int getA() &#123;
+        return _a;
+    &#125;
+private:
+    int _a;
+&#125;;
+
+void myPrint(Foo f) &#123;
+    myPrint(f.getA());
+&#125;
+
+void myPrint(int i) &#123;
+    std::cout &lt;&lt; i &lt;&lt; std::endl;
+&#125;
+
+int main() &#123;
+    Foo foo = 1;
+    myPrint(foo);
+    return 0;
+&#125;
+</code></pre>
+<p>You’ll get an output like this:</p>
+<pre><code>Process finished with exit code 139 (interrupted by signal 11: SIGSEGV)
+</code></pre><h1 id="What’s-Wrong"><a href="#What’s-Wrong" class="headerlink" title="What’s Wrong?"></a>What’s Wrong?</h1><p>If you debug step by step, you will find that <code>void myPrint(Foo f)</code> is called recursively.</p>
+<p>Actually, when <code>myPrint(f.getA());</code> is being excuted, compiler “helped” us to convert <code>f.getA()</code> to a new Foo object! So, we will never achieve the function <code>void myPrint(int i)</code> and it will never stop!</p>
+<h1 id="Use-Explicit-to-Avoid"><a href="#Use-Explicit-to-Avoid" class="headerlink" title="Use Explicit to Avoid"></a>Use Explicit to Avoid</h1><p>How to avoid this situation? The answer is using keyword <code>explicit</code> when you declare a constructor function:</p>
+<pre><code class="lang-c++">class Foo &#123;
+public:
+    explicit Foo(int a) : _a(a) &#123;&#125;
+
+    int getA() &#123;
+        return _a;
+    &#125;
+private:
+    int _a;
+&#125;;
+
+void myPrint(int i) &#123;
+    std::cout &lt;&lt; i &lt;&lt; std::endl;
+&#125;
+
+void myPrint(Foo f) &#123;
+    myPrint(f.getA());
+&#125;
+
+int main() &#123;
+    Foo foo = Foo(1);
+    myPrint(foo);
+    return 0;
+&#125;
+</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">Author：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">NeilKleistGao</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">Link：</span><span class="p-copytight-value"><a href="/2020/10/10/cpp-everything-can-work-1/">http://example.com/2020/10/10/cpp-everything-can-work-1/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">Copyright：</span><span class="p-copytight-value">All articles in this blog use<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>license。Please indicate the source when reprinting  <a href="http://example.com">NeilKleistGao's blog</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/C/">C++</a></span></div><aside id="toc"><div class="toc-title">CATALOG</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface"><span class="toc-number">1.</span> <span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Implicit-Conversion"><span class="toc-number">2.</span> <span class="toc-text">Implicit Conversion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Two-Functions"><span class="toc-number">3.</span> <span class="toc-text">Two Functions</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What%E2%80%99s-Wrong"><span class="toc-number">4.</span> <span class="toc-text">What’s Wrong?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Use-Explicit-to-Avoid"><span class="toc-number">5.</span> <span class="toc-text">Use Explicit to Avoid</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/10/08/conjugate-gradient/">Conjugate Gradient &gt;</a></div></section><script>MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        processEscapes: true
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax();
+    for (var i = 0; i < all.length; ++i)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+});</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">NeilKleistGao's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br>Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>

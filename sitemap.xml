@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/2020/10/08/conjugate-gradient/</loc>
+    <loc>http://example.com/2020/10/10/cpp-everything-can-work-1/</loc>
     
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     
   </url>
   
   <url>
     <loc>http://example.com/2020/10/06/cpp-everything-can-work-0/</loc>
     
-    <lastmod>2020-10-06</lastmod>
+    <lastmod>2020-10-10</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2020/10/08/conjugate-gradient/</loc>
+    
+    <lastmod>2020-10-09</lastmod>
     
   </url>
   
@@ -60,7 +67,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -68,35 +75,35 @@
   
   <url>
     <loc>http://example.com/tags/Linear-Algebra/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Numerical-Analysis/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/C/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Python/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Calculus/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -105,21 +112,21 @@
   
   <url>
     <loc>http://example.com/categories/Notes/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/categories/Entrusted-Tutorial/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://example.com/categories/C-Everything-Can-Work/</loc>
-    <lastmod>2020-10-09</lastmod>
+    <lastmod>2020-10-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
